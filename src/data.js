@@ -13,14 +13,14 @@ const products = [
     description: faker.commerce.productDescription(),
     price: faker.commerce.price(),
     qty: Math.floor(Math.random() * 11),
-    image: faker.image.business()
+    image: "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
   },
   {
     title: 'iPad',
     description: faker.commerce.productDescription(),
     price: faker.commerce.price(),
     qty: Math.floor(Math.random() * 11),
-    image: faker.image.business()
+    image: "https://images.unsplash.com/photo-1557825835-70d97c4aa567?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
   },
   {
     title: 'Macbook Pro',

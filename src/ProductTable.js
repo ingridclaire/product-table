@@ -1,24 +1,56 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import ProductRow from './ProductRow'
+import data from './data';
 
-const ProductTable = ({ products, handleAddProduct, handleDelete }) => {
+const ProductTable = () => {
   const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('')
-  const [price, setPrice] = useState(0)
+  const [description, setDescription] = useState('');
+  const [price, setPrice] = useState(0);
   const [qty, setQty] = useState(0);
   const [image, setImage] = useState('');
+  const [updateClicked, setUpdateClicked] = useState(false);
+  const [products, setProducts] = useState(data);
+  const [oldTitle, setOldTitle] = useState('');
+
+  const handleAddProduct = (e, productData) => {
+    e.preventDefault();
+    if (!updateClicked) {
+      const updatedProducts = [...products, productData]
+      setProducts(updatedProducts);
+    } else {
+      const updatedProducts = [...products]
+      updatedProducts.forEach(product => {
+        if (product.title === oldTitle) {
+          setTitle(product.title)
+          setOldTitle(product.title);
+          setDescription(product.description)
+          setPrice(product.price);
+          setQty(product.qty);
+          setImage(product.image);
+        }
+      })
+      setProducts(updatedProducts);
+    }
+  }
+
+  const handleDelete = () => {
+    const updatedProducts = products.filter(product => product.title !== title)
+    setProducts(updatedProducts);
+  }
+
+  const setUpdateDetails = (product) => {
+    setUpdateClicked(true);
+    setTitle(product.title)
+    setOldTitle(product.title);
+    setDescription(product.description)
+    setPrice(product.price);
+    setQty(product.qty);
+    setImage(product.image);
+  }
 
   return (
-    <div>
-      
-      <form style={{display:'flex', flexDirection:'column', width: '60%'}}>
-        <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Enter a product title" />
-        <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
-        <input type="text" value={price} onChange={(e) => setPrice(e.target.value)} />
-        <input type="text" value={qty} onChange={(e) => setQty(e.target.value)} />
-        <input type="text" value={image} onChange={(e) => setImage(e.target.value)} />
-        <button type="submit" onClick={(e) => handleAddProduct(e, {title, description, price, qty, image})}>Add a Product</button>
-      </form>
+    <div className="table-container">
+      <h1>Our Products</h1>
       <table>
         <thead>
           <tr>
@@ -32,10 +64,24 @@ const ProductTable = ({ products, handleAddProduct, handleDelete }) => {
         </thead>
         <tbody>
           {products.map(item => (
-            <ProductRow product={item} handleDelete={handleDelete}/>
+            <ProductRow product={item} handleDelete={handleDelete} setUpdateDetails={setUpdateDetails} />
           ))}
         </tbody>
       </table>
+      <form style={{ display: 'flex', flexDirection: 'column', width: '50%', marginTop: '25px' }}>
+        <h4>{!updateClicked ? 'Add a Product!' : 'Update Product'}</h4>
+        <label>Enter a Product Title </label>
+        <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Enter a product title" />
+        <label>Enter a Product Description </label>
+        <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
+        <label>Enter a Product Price </label>
+        <input type="text" value={price} onChange={(e) => setPrice(e.target.value)} />
+        <label>Enter a Product Quantity </label>
+        <input type="text" value={qty} onChange={(e) => setQty(e.target.value)} />
+        <label>Enter a Product Title </label>
+        <input type="text" value={image} onChange={(e) => setImage(e.target.value)} />
+        <button type="submit" onClick={(e) => handleAddProduct(e, { title, description, price, qty, image })}>{!updateClicked ? 'Add Product' : 'Update Product'}</button>
+      </form>
     </div>
   )
 }
